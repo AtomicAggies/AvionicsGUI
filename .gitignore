@@ -22,3 +22,13 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+#IDE
+*.iml
+
+## Directory-based project format:
+.idea/
+
+## Plugin-specific files:
+# IntelliJ
+/out/
