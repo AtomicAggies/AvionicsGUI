@@ -5,6 +5,7 @@ module com.atomicaggies.gui.avionicsgui {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires io.reactivex.rxjava3;
 
     opens com.atomicaggies.gui.avionicsgui to javafx.fxml;
     exports com.atomicaggies.gui.avionicsgui;
