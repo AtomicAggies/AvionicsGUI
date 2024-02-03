@@ -20,6 +20,7 @@ public class MainApp extends Application {
         //
         // Choosing a port
         //
+        System.out.println("Listing Ports");
         SerialPort chosenPort = null;
         SerialPort[] ports = SerialPort.getCommPorts();
         for (SerialPort port : ports) {
@@ -47,7 +48,7 @@ public class MainApp extends Application {
         // Initialize your DataAcquisitionService with the chosen port
         TelemetryDataModel telemetryDataModel = new TelemetryDataModel();
         DataAcquisitionService dataAcquisitionService = new DataAcquisitionService(telemetryDataModel, chosenPort);
-
+        dataAcquisitionService.startReading();
 
 
 
