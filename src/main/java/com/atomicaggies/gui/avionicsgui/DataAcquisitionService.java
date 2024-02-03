@@ -20,10 +20,16 @@ public class DataAcquisitionService extends Thread{
 
                 // Process the read data (this is just an example, adjust according to your data format)
                 String receivedData = new String(readBuffer, 0, numRead);
-                System.out.println("Received data: " + receivedData);
+                System.out.println("Received raw data: " + receivedData);
 
                 // Update the TelemetryDataModel (implement according to your data handling)
-//                telemetryDataModel.updateTime(receivedData);
+                GsDataParser dataParser = new GsDataParser();
+                try {
+                    dataParser.parse(receivedData);
+                } catch (DataParsingException e) {      //FIXME Id rather print the raw data somewhere on the GUI so its visible
+                    System.out.println(e);
+                    System.out.println("Error Parsing Data:" + receivedData);
+                }
             }
 
             try {

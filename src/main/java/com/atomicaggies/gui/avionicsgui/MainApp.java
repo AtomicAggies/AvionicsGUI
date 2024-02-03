@@ -9,6 +9,7 @@ import java.io.IOException;
 import com.fazecast.jSerialComm.SerialPort;
 
 public class MainApp extends Application {
+    private final int BAUD_RATE = 115200;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("dashboard-view.fxml"));
@@ -30,7 +31,7 @@ public class MainApp extends Application {
         // Check if the port is valid
         if (chosenPort != null) {
             // Configure and open the port
-            chosenPort.setBaudRate(115200); // Adjust the baud rate as needed
+            chosenPort.setBaudRate(BAUD_RATE); // Adjust the baud rate as needed
             if (chosenPort.openPort()) {
                 System.out.println("Port opened successfully.");
             } else {
