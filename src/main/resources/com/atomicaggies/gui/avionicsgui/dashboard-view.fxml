@@ -5,12 +5,22 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.atomicaggies.gui.avionicsgui.DashboardController">
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.atomicaggies.gui.avionicsgui.DashboardController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
+    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER" spacing="10">
+        <!-- Add components for the first column here -->
+        <Label text="Temperature"/>
+        <Pane fx:id="tileContainer"/>
+    </VBox>
+<!--    <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER" spacing="10">-->
+<!--        &lt;!&ndash; Add components for the second column here &ndash;&gt;-->
+<!--        <Label text="Humidity"/>-->
+<!--        <Pane fx:id="humidityTileContainer"/>-->
+<!--    </VBox>-->
+    <!-- Add more VBox or HBox containers as needed for additional telemetry data -->
+</GridPane>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>

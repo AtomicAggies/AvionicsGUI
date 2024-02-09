@@ -2,6 +2,7 @@ package com.atomicaggies.gui.avionicsgui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -10,13 +11,23 @@ import com.fazecast.jSerialComm.SerialPort;
 
 public class MainApp extends Application {
     private final int BAUD_RATE = 115200;
+    private final String PORT_NAME = "cu.SLAB_USBtoUART";
     @Override
     public void start(Stage stage) throws IOException {
+
+        //
+        // Setting the stage and Scene
+        //
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("dashboard-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
+        stage.setTitle("Dashboard Example");
         stage.setScene(scene);
         stage.show();
+
+        //
+        //
+        //
 
         //
         // Choosing a port
@@ -27,7 +38,7 @@ public class MainApp extends Application {
         for (SerialPort port : ports) {
             System.out.println(port.getSystemPortName());
         }
-        chosenPort = SerialPort.getCommPort("cu.SLAB_USBtoUART");
+        chosenPort = SerialPort.getCommPort(PORT_NAME);
         // Check if the port is valid
         if (chosenPort != null) {
             // Configure and open the port
@@ -46,8 +57,14 @@ public class MainApp extends Application {
         // Port is Chosen at this point
         //
 
-        // Initialize your DataAcquisitionService with the chosen port
+        //telemetryDataModel
         TelemetryDataModel telemetryDataModel = new TelemetryDataModel();
+        // Get the controller and set the TelemetryDataModel
+        DashboardController controller = fxmlLoader.getController();
+        controller.setTelemetryDataModel(telemetryDataModel);
+
+        // Initialize your DataAcquisitionService with the chosen port
+
         DataAcquisitionService dataAcquisitionService = new DataAcquisitionService(telemetryDataModel, chosenPort);
         dataAcquisitionService.startReading();
 
