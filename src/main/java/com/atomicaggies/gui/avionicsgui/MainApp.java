@@ -68,8 +68,6 @@ public class MainApp extends Application {
         DataAcquisitionService dataAcquisitionService = new DataAcquisitionService(telemetryDataModel, chosenPort);
         dataAcquisitionService.startReading();
 
-
-
     }
 
     public static void main(String[] args) {

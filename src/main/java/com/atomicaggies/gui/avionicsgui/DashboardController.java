@@ -2,6 +2,7 @@ package com.atomicaggies.gui.avionicsgui;
 
 
 import eu.hansolo.tilesfx.TileBuilder;
+import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -34,14 +35,16 @@ public class DashboardController {
     //      In other words, scene.show() already called
     //POST: Initialize Tiles and bind them to model
     public void initializeSubscriptions() {
-        Tile temperatureTile = TileBuilder.create()
+        temperatureTile =TileBuilder.create()
                 .skinType(Tile.SkinType.GAUGE)
                 .title("Temperature")
                 .unit("°C")
                 .build();
 
         tileContainer.getChildren().add(temperatureTile);
-        telemetryDataModel.getTemperatureObservable().subscribe(this::updateTemperatureTile);
+        Disposable tempSub = telemetryDataModel.getTemperatureObservable().subscribe(this::updateTemperatureTile);
+        disposables.add(tempSub);
+
         // Additional subscription setup can go here
     }
 
@@ -53,6 +56,20 @@ public class DashboardController {
         Platform.runLater(() -> temperatureTile.setValue(temperature));
     }
 
+
+    //FIXME should override stop method in MainApp via atOverride
+    //FIXME create a func to dispose in Controller class
+    // Also, closing the window should shut down the background thread.
+//    public void disposeDisposables() {
+//        if (!disposables.isDisposed()) {
+//            disposables.dispose();
+//        }
+//    }
+//    public void stop() throws Exception {
+////        super.stop(); FIXME
+//        System.out.println("Disposing of disposables");
+//        disposables.dispose(); // Dispose all subscriptions
+//    }
     // Add methods for binding and updating tiles
     // ...
 }

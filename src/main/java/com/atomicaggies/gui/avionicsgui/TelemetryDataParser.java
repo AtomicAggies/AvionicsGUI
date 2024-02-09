@@ -3,6 +3,6 @@ package com.atomicaggies.gui.avionicsgui;
 import java.text.ParseException;
 
 public interface TelemetryDataParser {
-    TelemetryDataModel parse(String rawData) throws DataParsingException;
+    TelemetrySnapshotDTO parse(String rawData,TelemetryDataModel model) throws DataParsingException;
 
 }

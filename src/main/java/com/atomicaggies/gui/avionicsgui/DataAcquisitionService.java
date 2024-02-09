@@ -1,6 +1,7 @@
 package com.atomicaggies.gui.avionicsgui;
 
 import com.fazecast.jSerialComm.SerialPort;
+import javafx.application.Platform;
 
 public class DataAcquisitionService extends Thread{
     private TelemetryDataModel telemetryDataModel;
@@ -25,7 +26,13 @@ public class DataAcquisitionService extends Thread{
                 // Update the TelemetryDataModel (implement according to your data handling)
                 GsDataParser dataParser = new GsDataParser();
                 try {
-                    dataParser.parse(receivedData);
+                    TelemetrySnapshotDTO dataSnapshot = dataParser.parse(receivedData,telemetryDataModel);
+
+                    Platform.runLater(()->{
+                        telemetryDataModel.updateTime(dataSnapshot.time());
+                        telemetryDataModel.updateTemperature(dataSnapshot.temperature());
+                        telemetryDataModel.updateHumidity(dataSnapshot.humidity());
+                    });
                 } catch (DataParsingException e) {      //FIXME Id rather print the raw data somewhere on the GUI so its visible
                     System.out.println(e);
                     System.out.println("Error Parsing Data:" + receivedData);

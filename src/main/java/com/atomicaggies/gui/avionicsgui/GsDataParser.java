@@ -3,7 +3,7 @@ package com.atomicaggies.gui.avionicsgui;
 public class GsDataParser implements TelemetryDataParser {
     private final int parts_len = 5;
     @Override
-    public TelemetryDataModel parse(String rawData) throws DataParsingException {
+    public TelemetrySnapshotDTO parse(String rawData,TelemetryDataModel model) throws DataParsingException {
         // Expected format: "GSDATA,100000,28.20,36.20,ENDGS"
         // "GSDATA,timestamp,temp,humidity,ENDGS"
         rawData = rawData.strip().replace("\n","");
@@ -19,11 +19,9 @@ public class GsDataParser implements TelemetryDataParser {
             double temperature = Double.parseDouble(parts[2]);
             double humidity = Double.parseDouble(parts[3]);
 
-            TelemetryDataModel model = new TelemetryDataModel();
-            model.updateTime(time);
-            model.updateTemperature(temperature);
-            model.updateHumidity(humidity);
-            return model;
+            TelemetrySnapshotDTO snapshot = new TelemetrySnapshotDTO(time,temperature,humidity);
+
+            return snapshot;
         } catch (NumberFormatException e) {
             throw new DataParsingException("Error parsing numerical values", e);
         }
