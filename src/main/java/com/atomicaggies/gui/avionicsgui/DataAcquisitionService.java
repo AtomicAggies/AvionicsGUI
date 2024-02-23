@@ -12,6 +12,25 @@ public class DataAcquisitionService extends Thread{
         this.serialPort = port;
     }
 
+    //PRE: rawData with prefix such as GSDATA: "GSDATA" + "data"+...
+    //POST: returns the appropriate TelemetrySnapshotCreator
+    public TelemetrySnapshotCreator getCreatorFor(String rawData) throws DataParsingException {
+        if(rawData.startsWith("GSDATA")){
+            return new FauxTelemetrySnapshotCreator();
+        }
+//        else if (rawData.startsWith("BMP")) {
+//            return new BMPTelemetrySnapshotCreator();
+//        } else if (rawData.startsWith("ADXL")) {
+//            return new ADXLTelemetrySnapshotCreator();
+//        }
+        else {
+            throw new DataParsingException("Unknown data type");
+        }
+    }
+
+
+    //PRE: none
+    //POST: Updates tiles data while serialPort isOpen
     public void run() {
 
         while (serialPort.isOpen()) {
@@ -23,25 +42,19 @@ public class DataAcquisitionService extends Thread{
                 String receivedData = new String(readBuffer, 0, numRead);
                 System.out.println("Received raw data: " + receivedData);
 
-                // Update the TelemetryDataModel (implement according to your data handling)
-                GsDataParser dataParser = new GsDataParser();
-                try {
-                    TelemetrySnapshotDTO dataSnapshot = dataParser.parse(receivedData,telemetryDataModel);
+                //create Appropriate Factory, create Snapshot, Update TelemetryDataModel
+                Platform.runLater(()->{
+                    TelemetrySnapshotCreator creator;
+                    TelemetrySnapshot snapshot;
+                    try {
+                         creator= getCreatorFor(receivedData);
+                         snapshot= creator.createProduct(receivedData);
+                    } catch (DataParsingException e) { //FIXME print the raw data somewhere on the GUI so its visible
+                        throw new RuntimeException(e);
+                    }
+                    snapshot.updateModel(telemetryDataModel);
+                });
 
-                    Platform.runLater(()->{
-                        telemetryDataModel.updateTime(dataSnapshot.time());
-                        telemetryDataModel.updateTemperature(dataSnapshot.temperature());
-                        telemetryDataModel.updateHumidity(dataSnapshot.humidity());
-                        //FIXME FactoryClass Implementation
-//                        TelemetrySnapshotCreator creator = getCreatorFor(rawData); // This needs to determine the correct creator
-//                        TelemetrySnapshot snapshot = creator.createProduct(rawData);
-
-                    });
-
-                } catch (DataParsingException e) {      //FIXME Id rather print the raw data somewhere on the GUI so its visible
-                    System.out.println(e);
-                    System.out.println("Error Parsing Data:" + receivedData);
-                }
             }
 
             try {

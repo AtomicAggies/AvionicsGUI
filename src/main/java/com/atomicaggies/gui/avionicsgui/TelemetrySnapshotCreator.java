@@ -1,6 +1,6 @@
 package com.atomicaggies.gui.avionicsgui;
 
 public abstract class TelemetrySnapshotCreator {
-    public abstract TelemetrySnapshot createProduct(String rawData);
+    public abstract TelemetrySnapshot createProduct(String rawData) throws DataParsingException;
 }
 

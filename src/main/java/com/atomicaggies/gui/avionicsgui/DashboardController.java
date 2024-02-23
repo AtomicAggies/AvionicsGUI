@@ -52,7 +52,7 @@ public class DashboardController {
     //POST: updates the temperature tile
     private void updateTemperatureTile(double temperature) {
         // Called by RxJava subscription to update the UI
-        System.out.println("updating the tile");
+        System.out.println("updating the temperature tile");
         Platform.runLater(() -> temperatureTile.setValue(temperature));
     }
 
