@@ -32,7 +32,12 @@ public class DataAcquisitionService extends Thread{
                         telemetryDataModel.updateTime(dataSnapshot.time());
                         telemetryDataModel.updateTemperature(dataSnapshot.temperature());
                         telemetryDataModel.updateHumidity(dataSnapshot.humidity());
+                        //FIXME FactoryClass Implementation
+//                        TelemetrySnapshotCreator creator = getCreatorFor(rawData); // This needs to determine the correct creator
+//                        TelemetrySnapshot snapshot = creator.createProduct(rawData);
+
                     });
+
                 } catch (DataParsingException e) {      //FIXME Id rather print the raw data somewhere on the GUI so its visible
                     System.out.println(e);
                     System.out.println("Error Parsing Data:" + receivedData);
