@@ -14,12 +14,15 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 public class DashboardController {
     @FXML
     private Pane tileContainer; // This Pane will act as a placeholder for TilesFX components //FIXME USE Factory Method for cleaner code
+    //FIXME This is where you declare new tileContainers for each data tile
+
 
     //UI ELEMENTS
     private CompositeDisposable disposables = new CompositeDisposable();
     private TelemetryDataModel telemetryDataModel;
     private Tile temperatureTile; // Add UI element for temperature
     private Tile humidityTile;    // Add UI element for humidity
+    //FIXME THis is where you declare new Tiles
 
     public void setTelemetryDataModel(TelemetryDataModel telemetryDataModel) {
         this.telemetryDataModel = telemetryDataModel;
@@ -41,6 +44,9 @@ public class DashboardController {
                 .unit("°C")
                 .build();
 
+        //FIXME this is where you add your Tile,
+        // create a disposable and subscribe to update function,
+        // and disposable to disposables list
         tileContainer.getChildren().add(temperatureTile);
         Disposable tempSub = telemetryDataModel.getTemperatureObservable().subscribe(this::updateTemperatureTile);
         disposables.add(tempSub);
@@ -55,6 +61,8 @@ public class DashboardController {
         System.out.println("updating the temperature tile");
         Platform.runLater(() -> temperatureTile.setValue(temperature));
     }
+    //FIXME this is where you implement an updateDataTile(data)
+    // should be the same implementation
 
 
     //FIXME should override stop method in MainApp via atOverride
