@@ -16,6 +16,8 @@ public class DashboardController {
     private Pane tileContainer; // This Pane will act as a placeholder for TilesFX components //FIXME USE Factory Method for cleaner code
     //FIXME This is where you declare new tileContainers for each data tile
 
+    @FXML
+    private Pane humidityTileContainer;
 
     //UI ELEMENTS
     private CompositeDisposable disposables = new CompositeDisposable();
@@ -43,12 +45,18 @@ public class DashboardController {
                 .title("Temperature")
                 .unit("°C")
                 .build();
-
+        humidityTile =  TileBuilder.create()
+                .skinType(Tile.SkinType.GAUGE)
+                .title("Humidity Percentage")
+                .unit("%")
+                .build();
         //FIXME this is where you add your Tile,
         // create a disposable and subscribe to update function,
         // and disposable to disposables list
         tileContainer.getChildren().add(temperatureTile);
+        humidityTileContainer.getChildren().add(humidityTile);
         Disposable tempSub = telemetryDataModel.getTemperatureObservable().subscribe(this::updateTemperatureTile);
+        Disposable humidSub = telemetryDataModel.getTemperatureObservable().subscribe(this::updateHumidityTile);
         disposables.add(tempSub);
 
         // Additional subscription setup can go here
@@ -60,6 +68,11 @@ public class DashboardController {
         // Called by RxJava subscription to update the UI
         System.out.println("updating the temperature tile");
         Platform.runLater(() -> temperatureTile.setValue(temperature));
+    }
+    private void updateHumidityTile(double humidity){
+        // Called by RxJava subscription to update the UI
+        System.out.println("updating the humidity tile");
+        Platform.runLater(() -> humidityTile.setValue(humidity));
     }
     //FIXME this is where you implement an updateDataTile(data)
     // should be the same implementation

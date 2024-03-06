@@ -16,11 +16,11 @@
         <Label text="Temperature"/>
         <Pane fx:id="tileContainer"/>
     </VBox>
-<!--    <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER" spacing="10">-->
-<!--        &lt;!&ndash; Add components for the second column here &ndash;&gt;-->
-<!--        <Label text="Humidity"/>-->
-<!--        <Pane fx:id="humidityTileContainer"/>-->
-<!--    </VBox>-->
+    <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" alignment="CENTER" spacing="10">
+        <!-- Add components for the second column here -->
+        <Label text="Humidity"/>
+        <Pane fx:id="humidityTileContainer"/>
+    </VBox>
     <!-- Add more VBox or HBox containers as needed for additional telemetry data -->
 </GridPane>
 
